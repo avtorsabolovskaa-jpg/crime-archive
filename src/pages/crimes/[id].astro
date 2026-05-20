@@ -1,6 +1,9 @@
 ---
 import { createClient } from '@supabase/supabase-js'
 import MainLayout from '../../layouts/MainLayout.astro';
+import { marked } from 'marked'
+
+
 
 export async function getStaticPaths() {
   const supabase = createClient(
@@ -41,7 +44,8 @@ const { data: crime } = await supabase
       <hr class="divider" />
       <section class="description">
         <h3>ОБСТОЯТЕЛЬСТВА ДЕЛА</h3>
-        <div>{crime.description || 'Описание отсутствует.'}</div>
+        <div set:html={marked(crime.description || '')} />
+
       </section>
       <blockquote class="verdict">
         <p><strong>ПРИГОВОР:</strong> {crime.verdict || 'Не вынесен'}</p>
