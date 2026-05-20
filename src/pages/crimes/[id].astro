@@ -1,6 +1,7 @@
 ---
 import { createClient } from '@supabase/supabase-js'
-import { marked } from 'marked'
+<!-- import { marked } from 'marked' -->
+
 
 import MainLayout from '../../layouts/MainLayout.astro';
 
@@ -74,7 +75,8 @@ const { data: crime } = await supabase
         <p><strong>⚖️ Статус:</strong> {crime.status}</p>
         <hr />
         <!-- Markdown-описание превращается в HTML -->
-        <div set:html={marked(crime.description || '')} />
+        <div>{crime.description}</div>
+
         <hr />
         <a href="/crimes">← Назад к списку</a>
       </article>
