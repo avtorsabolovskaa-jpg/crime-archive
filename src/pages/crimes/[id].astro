@@ -26,57 +26,94 @@ const { data: crime } = await supabase
   .single()
 ---
 
-<html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <title>{crime?.name || 'Преступление не найдено'}</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 700px;
-        margin: 40px auto;
-        padding: 0 20px;
-        background: #f9f9f9;
-        color: #333;
-      }
-      article {
-        background: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      }
-      h1 {
-        margin-top: 0;
-        color: #c0392b;
-      }
-      hr {
-        border: none;
-        border-top: 1px solid #ddd;
-        margin: 20px 0;
-      }
-      a {
-        color: #2980b9;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    {crime ? (
-      <article>
-        <h1>{crime.name}</h1>
-        <p><strong>📅 Дата:</strong> {crime.date}</p>
-        <p><strong>📍 Место:</strong> {crime.location}</p>
-        <p><strong>⚖️ Статус:</strong> {crime.status}</p>
-        <hr />
-        <div>{crime.description}</div>
-        <hr />
-        <a href="/crimes">← Назад к списку</a>
-      </article>
-    ) : (
-      <p>Запись не найдена.</p>
-    )}
-  </body>
-</html>
+<MainLayout>
+  {crime ? (
+    <article class="case-file">
+      <header>
+        <h1>ДЕЛО № {crime.case_number || crime.id}</h1>
+        <h2>{crime.name}</h2>
+        <div class="meta">
+          <span>📅 {crime.date}</span>
+          <span>📍 {crime.location || 'Место не указано'}</span>
+          <span>⚖️ {crime.status || 'Статус неизвестен'}</span>
+        </div>
+      </header>
+      <hr class="divider" />
+      <section class="description">
+        <h3>ОБСТОЯТЕЛЬСТВА ДЕЛА</h3>
+        <div>{crime.description || 'Описание отсутствует.'}</div>
+      </section>
+      <blockquote class="verdict">
+        <p><strong>ПРИГОВОР:</strong> {crime.verdict || 'Не вынесен'}</p>
+      </blockquote>
+      <a href="/crimes">← ВЕРНУТЬСЯ В АРХИВ</a>
+    </article>
+  ) : (
+    <p>Запись не найдена.</p>
+  )}
+</MainLayout>
+
+<style>
+  .case-file {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--color-card-bg, #fffef9);
+    border: 1px solid var(--color-border, #d3cec4);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .case-file header h1 {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--color-accent, #8b1a1a);
+    margin-bottom: 0.5rem;
+  }
+  .case-file header h2 {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    text-align: center;
+    font-size: 1.8rem;
+    color: var(--color-heading, #1a1a1a);
+    margin-bottom: 1.5rem;
+  }
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    background: #e8e4d9;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .divider {
+    border: none;
+    border-top: 2px solid var(--color-accent, #8b1a1a);
+    margin: 2rem 0;
+  }
+  .description {
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+  .description h3 {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    color: var(--color-accent, #8b1a1a);
+    margin-bottom: 1rem;
+  }
+  .verdict {
+    background: #f9f9f9;
+    border-left: 5px solid var(--color-accent, #8b1a1a);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+  }
+  a {
+    color: var(--color-accent, #8b1a1a);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
