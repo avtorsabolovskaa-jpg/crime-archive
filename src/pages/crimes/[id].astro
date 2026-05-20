@@ -1,8 +1,5 @@
 ---
 import { createClient } from '@supabase/supabase-js'
-
-
-
 import MainLayout from '../../layouts/MainLayout.astro';
 
 export async function getStaticPaths() {
@@ -74,9 +71,7 @@ const { data: crime } = await supabase
         <p><strong>📍 Место:</strong> {crime.location}</p>
         <p><strong>⚖️ Статус:</strong> {crime.status}</p>
         <hr />
-        <!-- Markdown-описание превращается в HTML -->
         <div>{crime.description}</div>
-
         <hr />
         <a href="/crimes">← Назад к списку</a>
       </article>
@@ -84,5 +79,4 @@ const { data: crime } = await supabase
       <p>Запись не найдена.</p>
     )}
   </body>
-</html> 
- </html>
+</html>
