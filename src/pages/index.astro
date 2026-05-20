@@ -1,0 +1,35 @@
+---
+import { createClient } from '@supabase/supabase-js'
+
+// ВСТАВЬТЕ СВОИ ДАННЫЕ СЮДА
+const supabaseUrl = 'https://gmqqsadxpnmtowdtbpza.supabase.co'
+const supabaseKey = 'sb_publishable_3k_dWR7Ng7cgbvFpk6ucyg_VnGvrggv' // ваш публикуемый ключ полностью
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+const { data: products, error } = await supabase
+  .from('products')
+  .select('*')
+---
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Товары из базы</title>
+  </head>
+  <body>
+    <h1>Список товаров</h1>
+    {products && products.length > 0 ? (
+      <ul>
+        {products.map((product) => (
+          <li>
+            <strong>{product.name}</strong> — ${product.price}
+            <p>{product.description}</p>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Товаров пока нет.</p>
+    )}
+  </body>
+</html>

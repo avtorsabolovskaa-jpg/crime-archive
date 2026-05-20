@@ -1,0 +1,85 @@
+---
+import { createClient } from '@supabase/supabase-js'
+import { marked } from 'marked'
+
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const supabase = createClient(
+    'https://gmqqsadxpnmtowdtbpza.supabase.co',
+    'sb_publishable_3k_dWR7Ng7cgbvFpk6ucyg_VnGvrggv'
+  )
+  const { data: crimes } = await supabase.from('crimes').select('id')
+  if (!crimes) return []
+  return crimes.map((crime) => ({ params: { id: crime.id.toString() } }))
+}
+
+const { id } = Astro.params
+
+const supabase = createClient(
+  'https://gmqqsadxpnmtowdtbpza.supabase.co',
+  'sb_publishable_3k_dWR7Ng7cgbvFpk6ucyg_VnGvrggv'
+)
+
+const { data: crime } = await supabase
+  .from('crimes')
+  .select('*')
+  .eq('id', id)
+  .single()
+---
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>{crime?.name || 'Преступление не найдено'}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+        background: #f9f9f9;
+        color: #333;
+      }
+      article {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      h1 {
+        margin-top: 0;
+        color: #c0392b;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 20px 0;
+      }
+      a {
+        color: #2980b9;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    {crime ? (
+      <article>
+        <h1>{crime.name}</h1>
+        <p><strong>📅 Дата:</strong> {crime.date}</p>
+        <p><strong>📍 Место:</strong> {crime.location}</p>
+        <p><strong>⚖️ Статус:</strong> {crime.status}</p>
+        <hr />
+        <!-- Markdown-описание превращается в HTML -->
+        <div set:html={marked(crime.description || '')} />
+        <hr />
+        <a href="/crimes">← Назад к списку</a>
+      </article>
+    ) : (
+      <p>Запись не найдена.</p>
+    )}
+  </body>
+</html>

@@ -1,0 +1,43 @@
+/* Подключаем строгий шрифт с засечками */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;700&display=swap');
+
+:root {
+  /* Переменные для «архивной» темы */
+  --bg-color: #f4f1ea;       /* Цвет старой бумаги */
+  --text-color: #2c2416;     /* Тёмно-коричневый текст */
+  --accent-color: #8b1a1a;   /* Приглушённый красный */
+  --font-main: 'Inter', sans-serif;
+  --font-headings: 'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-headings);
+  color: var(--accent-color);
+}
+
+/* Стили для карточек дел */
+.case-card {
+  background: #fffef9; /* Белый с лёгким оттенком бумаги */
+  border: 1px solid #d3cec4;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+/* Счётчик на главной */
+.counter {
+  font-size: 3rem;
+  font-family: var(--font-headings);
+  color: var(--accent-color);
+  font-weight: 700;
+}
